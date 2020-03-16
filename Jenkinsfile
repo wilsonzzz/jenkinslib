@@ -46,31 +46,37 @@ pipeline {
                 }
             }
         }
-        //构建
-        stage("Build") {
-            steps {
-                timeout(time:20, unit:"MINUTES") {
-                    script {
-                        print("应用打包")
-                        
-                        mvnHome = tool "M2"
-                        println(mvnHome)
+        stage("01") {
+            failFast true
+            parallel {
+                //构建
+                stage("Build") {
+                    steps {
+                        timeout(time:20, unit:"MINUTES") {
+                            script {
+                                print("应用打包")
+                                
+                                mvnHome = tool "M2"
+                                println(mvnHome)
+                            }
+                        }
                     }
                 }
-            }
-        }
-        //代码扫描
-        stage("CodeScan") {
-            steps {
-                timeout(time:30, unit:"MINUTES") {
-                    script {
-                        print("代码扫描")
+                //代码扫描
+                stage("CodeScan") {
+                    steps {
+                        timeout(time:30, unit:"MINUTES") {
+                            script {
+                                print("代码扫描")
 
-                        tools.PrintMes("this is my lib!")
+                                tools.PrintMes("this is my lib!")
+                            }
+                        }
                     }
                 }
             }
         }
+
     }
     post {
         always {
