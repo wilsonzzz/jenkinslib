@@ -1,0 +1,57 @@
+#!groovy
+@Library('jenkinslibrary'@master) _
+
+def build = new.org.devops.build()
+
+String buildShell = "${env.buildShell}"
+pipeline {
+    agent { node { label "master"}}
+
+    stages{
+        stage("build"){
+            setps{
+                script{
+                    build.Build(buildType,buildShell)
+                }
+            }
+        }
+    }
+    // stages{
+    //     stage("MavenBuild"){
+    //         steps{
+    //             script{
+    //                 mvnHome = tool "M2"
+    //                 sh "${mvnHome}/bin/mvn ${buildShell}"
+    //             }
+    //         }
+    //     }
+    //     stage("AntBuild"){
+    //         steps{
+    //             script{
+    //                 try{
+    //                     antHome = tool "ANT"
+    //                     sh "${antHome}/bin/ant ${buildShell}"
+    //                 }catch(e){
+    //                     println(e)
+    //                 }                   
+    //             }
+    //         }
+    //     }
+    //     stage("GradleBuild"){
+    //         steps{
+    //             script{
+    //                 gradleHome = tool "GRADLE"
+    //                 sh "${gradleHome}/bin/gradle ${buildShell}"
+    //             }
+    //         }
+    //     }
+    //     stage("NpmBuild"){
+    //         steps{
+    //             script{
+    //                 npmHome = tool "NPM"
+    //                 sh "export NODE_HOME=${npmHome} && export PATH=\$NODE_HOME/bin:\$PATH && ${npmHome}/bin/npm ${buildShell}"
+    //             }
+    //         }
+    //     }
+    // }
+}
